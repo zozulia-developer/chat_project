@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Thread, Message
+
+from .models import Message, Thread
 
 
 class ThreadSerializer(serializers.ModelSerializer):

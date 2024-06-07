@@ -1,10 +1,11 @@
 from django.contrib.auth import get_user_model
-from rest_framework import generics, status
+from rest_framework import generics
 from rest_framework.exceptions import ValidationError
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Thread, Message
-from .serializers import ThreadSerializer, MessageSerializer
+from rest_framework.response import Response
+
+from .models import Message, Thread
+from .serializers import MessageSerializer, ThreadSerializer
 
 User = get_user_model()
 

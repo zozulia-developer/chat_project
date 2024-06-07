@@ -1,8 +1,8 @@
 from django.urls import path
+
 from .views import (
-    ThreadCreateView, ThreadDeleteView, UserThreadsListView,
-    MessageCreateView, ThreadMessagesListView, MarkMessageAsReadView,
-    UnreadMessagesCountView
+    MarkMessageAsReadView, MessageCreateView, ThreadCreateView, ThreadDeleteView, ThreadMessagesListView,
+    UnreadMessagesCountView, UserThreadsListView,
 )
 
 urlpatterns = [

@@ -7,7 +7,7 @@
    git clone <repository_url>
    cd chat_project
     ```
-   
+
 2. Install dependencies:
    ```sh
    pip install -r requirements.txt

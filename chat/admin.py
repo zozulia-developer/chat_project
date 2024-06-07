@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Thread, Message
+
+from .models import Message, Thread
 
 
 @admin.register(Thread)
