@@ -29,7 +29,12 @@
    python manage.py createsuperuser
    ```
 
-6. Run the server:
+6. Load db data:
+   ```sh
+   python manage.py loaddata db_data.json
+   ```
+
+7. Run the server:
    ```sh
    python manage.py runserver
    ```
