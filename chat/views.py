@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Message, Thread
-from .serializers import MessageSerializer, ThreadSerializer
+from .serializers import MarkMessageAsReadSerializer, MessageSerializer, ThreadSerializer
 
 User = get_user_model()
 
@@ -16,17 +16,22 @@ class ThreadCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        instance = serializer.save()
-
-        if instance.participants.count() > 2:
-            raise ValidationError("A thread cannot have more than two participants.")
-
         participants = self.request.data.get('participants')
+
         if participants:
             participants = [int(p) for p in participants]
-            existing_thread = Thread.objects.filter(participants__id__in=participants).distinct()
-            if existing_thread.exists():
-                return Response(ThreadSerializer(existing_thread.first()).data)
+
+            if len(participants) > 2:
+                raise ValidationError("A thread cannot have more than two participants.")
+
+            existing_thread = Thread.objects.filter(participants__id__in=participants)
+            existing_thread = [thread for thread in existing_thread
+                               if thread.participants.all().first().id in participants
+                               and thread.participants.all().last().id in participants]
+
+            if existing_thread:
+                return Response(ThreadSerializer(existing_thread[0]).data)
+
         serializer.save()
 
 
@@ -61,12 +66,8 @@ class ThreadMessagesListView(generics.ListAPIView):
 
 class MarkMessageAsReadView(generics.UpdateAPIView):
     queryset = Message.objects.all()
-    serializer_class = MessageSerializer
+    serializer_class = MarkMessageAsReadSerializer
     permission_classes = [IsAuthenticated]
-
-    def perform_update(self, serializer):
-        serializer.instance.is_read = True
-        serializer.save()
 
 
 class UnreadMessagesCountView(generics.ListAPIView):
