@@ -13,4 +13,5 @@ class ThreadAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'sender', 'thread', 'created', 'is_read')
+    list_select_related = ('thread',)
     search_fields = ('sender__username', 'thread__id')
